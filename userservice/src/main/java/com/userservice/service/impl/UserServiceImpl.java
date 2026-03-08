@@ -1,8 +1,12 @@
 package com.userservice.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.userservice.dto.UserDTO;
 import com.userservice.dto.UserResponse;
+import com.userservice.exception.EmailAlreadyExistException;
 import com.userservice.exception.UserNotFoundException;
 import com.userservice.model.User;
 import com.userservice.repository.UserRepository;
@@ -27,6 +31,37 @@ public class UserServiceImpl implements UserService{
 			userResponse.setEmail(user.getEmail());
 		}
 		return userResponse;		
+	}
+
+	@Override
+	public String createUser(UserDTO user) {
+		User create = new User();
+		if(userRepository.existsByEmail(user.getEmail())) {
+			throw new EmailAlreadyExistException("Email "+user.getEmail()+" Already exists in system.");
+		}
+		create.setEmail(user.getEmail());
+		create.setUsername(user.getUsername());
+		create.setPhone(user.getPhone());
+		
+		userRepository.save(create);
+		
+		return "User created sucessfully!";
+	}
+
+	@Override
+	public List<UserResponse> getAllUser() {
+		List<User> allUsers = userRepository.findAll();
+		List<UserResponse> response = allUsers.stream().map(user -> convertToDto(user)).toList();		
+		return response;
+	}
+	
+	private static UserResponse convertToDto(User user) {
+		UserResponse userResponse = new UserResponse();
+		userResponse.setId(user.getUserId());
+		userResponse.setEmail(user.getEmail());
+		userResponse.setName(user.getUsername());
+		userResponse.setPhone(user.getPhone());
+		return userResponse;
 	}
 
 }
