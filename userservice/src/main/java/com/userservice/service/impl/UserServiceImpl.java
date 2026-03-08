@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.userservice.dto.UserDTO;
 import com.userservice.dto.UserResponse;
+import com.userservice.dto.UserUpdateDTO;
 import com.userservice.exception.EmailAlreadyExistException;
 import com.userservice.exception.UserNotFoundException;
 import com.userservice.model.User;
@@ -62,6 +63,26 @@ public class UserServiceImpl implements UserService{
 		userResponse.setName(user.getUsername());
 		userResponse.setPhone(user.getPhone());
 		return userResponse;
+	}
+
+	@Override
+	public String updateUser(UserUpdateDTO dto, int userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(
+						() ->  new UserNotFoundException("User not found with id:- "+ userId));
+		user.setUsername(dto.getUsername());
+		user.setPhone(dto.getPhone());
+		userRepository.save(user);
+		return "User updated sucessfully";
+	}
+
+	@Override
+	public String deleteUser(int userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(
+						() ->  new UserNotFoundException("User not found with id:- "+ userId));
+		userRepository.delete(user);
+		return "User deleted sucessfully";
 	}
 
 }
