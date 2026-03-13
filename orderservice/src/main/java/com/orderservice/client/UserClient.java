@@ -12,6 +12,9 @@ public interface UserClient {
 	@GetMapping("/users/test")
 	String getUserTest();
 	
-	@GetMapping("/users/testexception/{userId}")
-	UserResponse getUserTestException(@PathVariable int userId);
+	@GetMapping("/users/get/{userId}")
+	UserResponse getUserById(@PathVariable int userId);
+	
+	
+	
 }

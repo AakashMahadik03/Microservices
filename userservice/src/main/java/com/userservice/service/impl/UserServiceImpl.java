@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService{
 			userResponse.setId(user.getUserId());
 			userResponse.setName(user.getUsername());
 			userResponse.setEmail(user.getEmail());
+		    userResponse.setPhone(user.getPhone());
 		}
 		return userResponse;		
 	}

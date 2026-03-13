@@ -32,7 +32,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/get/{userId}")
-	public UserResponse testException(@PathVariable int userId) {
+	public UserResponse getUser(@PathVariable int userId) {
 		return userService.getUserById(userId);
 	}
 	
